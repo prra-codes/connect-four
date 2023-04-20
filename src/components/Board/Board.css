@@ -1,13 +1,11 @@
 .board {
   height: 540px;
-  /* 9 x 6 = 54, 6 rows */
+
   width: 630px;
-  /* 9 x 7 = 63, 7 columns */
+
   background-color: blue;
   border: 10px solid navy;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
 }
-
-/* 6 rows, 7 Columns,  6 x 7 board , let's make each tile 90px by 90px */
