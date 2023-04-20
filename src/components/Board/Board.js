@@ -19,6 +19,8 @@ const Board = () => {
   const [currentPlayer, setCurrentPlayer] = useState(playerRed);
   const [gameOver, setGameOver] = useState(false);
 
+  const [currColumns, setCurrColumns] = useState([5, 5, 5, 5, 5, 5, 5]); // array to mark the height of each column, starts at bottom row
+
   // columns are horizontal position
   // rows are vertical position
 
@@ -28,7 +30,16 @@ const Board = () => {
       return;
     } // if game over, cannot set piece
 
-    const boardCopy = [...boardArr]; // making copy to so can update it
+    const currColumnsCopy = [...currColumns];
+
+    rowCoord = currColumnsCopy[columnCoord];
+    // gets row of specific column
+
+    if (rowCoord < 0) {
+      return;
+    } // if r < 0, means column is filled, so cannot place piece
+
+    const boardCopy = [...boardArr]; // making copy so board can be updated
 
     if (currentPlayer === playerRed) {
       boardCopy[rowCoord][columnCoord] = "red";
@@ -41,6 +52,10 @@ const Board = () => {
     // if yellow turn, change piece to yellow turn
 
     setBoardArr(boardCopy); // updating board state
+
+    currColumnsCopy[columnCoord] = rowCoord - 1; // so row moves up by 1 row
+
+    setCurrColumns(currColumnsCopy);
   }
 
   const tiles = [];
@@ -62,8 +77,6 @@ const Board = () => {
     }
     tiles.push(rowArr);
   }
-
-  console.log("TILES", tiles);
 
   return <div className="board">{tiles}</div>;
 };
