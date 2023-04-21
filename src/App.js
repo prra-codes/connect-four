@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <h1>Connect 4</h1>
-      <h2 className="winner"></h2>
+
       <Board />
     </div>
   );

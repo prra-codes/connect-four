@@ -14,8 +14,9 @@ const Board = () => {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
   ]);
-  const [playerRed, setPlayerRed] = useState("R");
-  const [playerYellow, setPlayerYellow] = useState("Y");
+
+  const [playerRed, setPlayerRed] = useState("red");
+  const [playerYellow, setPlayerYellow] = useState("yellow");
   const [currentPlayer, setCurrentPlayer] = useState(playerRed);
   const [gameOver, setGameOver] = useState(false);
 
@@ -55,13 +56,63 @@ const Board = () => {
 
     currColumnsCopy[columnCoord] = rowCoord - 1; // so row moves up by 1 row
 
-    setCurrColumns(currColumnsCopy);
+    setCurrColumns(currColumnsCopy); // updating columns
+
+    checkWinner();
   }
 
   const tiles = [];
 
   const rows = 6;
   const columns = 7;
+
+  function checkWinner() {
+    // horizontally
+
+    for (let row = 0; row < rows; row++) {
+      for (let column = 0; column < columns - 3; column++) {
+        if (boardArr[row][column] !== null) {
+          if (
+            boardArr[row][column] === boardArr[row][column + 1] &&
+            boardArr[row][column + 1] === boardArr[row][column + 2] &&
+            boardArr[row][column + 2] === boardArr[row][column + 3]
+          ) {
+            decideWinner(row, column);
+            return; // so we don't have to check the rest of the rows, vertically or diagonally when we've found a connect 4
+          }
+        }
+      }
+    }
+
+    // vertically
+
+    for (let column = 0; column < columns; column++) {
+      for (let row = 0; row < rows - 3; row++) {
+        if (boardArr[row][column] !== null) {
+          if (
+            boardArr[row][column] === boardArr[row + 1][column] &&
+            boardArr[row + 1][column] === boardArr[row + 2][column] &&
+            boardArr[row + 2][column] === boardArr[row + 2][column]
+          ) {
+            decideWinner(row, column);
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  function decideWinner(row, column) {
+    if (boardArr[row][column] === playerRed) {
+      console.log("RED WINS!");
+    } else {
+      console.log("YELLOW WINS");
+    }
+
+    setGameOver(true);
+  }
+
+  function loserStarts() {}
 
   for (let row = 0; row < rows; row++) {
     let rowArr = [];
@@ -78,7 +129,13 @@ const Board = () => {
     tiles.push(rowArr);
   }
 
-  return <div className="board">{tiles}</div>;
+  return (
+    <div>
+      {" "}
+      <div className="board">{tiles}</div>
+      {/* <h2 className="winner">`${winner === playerRed ? "RED" : "YELLOW"} WINS!`</h2> */}
+    </div>
+  );
 };
 
 export default Board;
