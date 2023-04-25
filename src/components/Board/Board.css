@@ -9,3 +9,18 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.winner-text {
+  height: 30px;
+  /* width: 20px; */
+  /* background-color: green; */
+  /* font-size: 20px; */
+}
+
+.winner-red {
+  color: red;
+}
+
+.winner-yellow {
+  color: yellow;
+}

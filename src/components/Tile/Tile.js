@@ -2,12 +2,10 @@ import React from "react";
 import "./Tile.css";
 
 const Tile = ({ color, id, setPiece }) => {
-  // console.log(id);
-
   let coords = id.split("-");
-  let rowCoord = Number(coords[0]);
+  let y = Number(coords[0]);
 
-  let columnCoord = Number(coords[1]);
+  let x = Number(coords[1]);
 
   return (
     <div
@@ -15,7 +13,8 @@ const Tile = ({ color, id, setPiece }) => {
       style={{
         backgroundColor: color,
       }}
-      onClick={() => setPiece(rowCoord, columnCoord)}
+      title={id}
+      onClick={() => setPiece(y, x)}
     ></div>
   );
 };

@@ -2,9 +2,10 @@ import React from "react";
 import Tile from "../Tile/Tile";
 import "./Board.css";
 import { useState } from "react";
+import Confetti from "react-confetti";
 
 const Board = () => {
-  // 6 rows, 7 columns
+  // 6 ys, 7 xs
 
   const [boardArr, setBoardArr] = useState([
     [null, null, null, null, null, null, null],
@@ -14,18 +15,22 @@ const Board = () => {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
   ]);
+  // boardArr[1][6], this is y first x second
+  //row is y, column is x
+  // y outer array, x inner array, it's reverse atm
 
   const [playerRed, setPlayerRed] = useState("red");
   const [playerYellow, setPlayerYellow] = useState("yellow");
   const [currentPlayer, setCurrentPlayer] = useState(playerRed);
   const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(null);
 
   const [currColumns, setCurrColumns] = useState([5, 5, 5, 5, 5, 5, 5]); // array to mark the height of each column, starts at bottom row
 
   // columns are horizontal position
   // rows are vertical position
 
-  function setPiece(rowCoord, columnCoord) {
+  function setPiece(y, x) {
     // with coords can change board state
     if (gameOver) {
       return;
@@ -33,20 +38,20 @@ const Board = () => {
 
     const currColumnsCopy = [...currColumns];
 
-    rowCoord = currColumnsCopy[columnCoord];
+    y = currColumnsCopy[x];
     // gets row of specific column
 
-    if (rowCoord < 0) {
+    if (y < 0) {
       return;
     } // if r < 0, means column is filled, so cannot place piece
 
     const boardCopy = [...boardArr]; // making copy so board can be updated
 
     if (currentPlayer === playerRed) {
-      boardCopy[rowCoord][columnCoord] = "red";
+      boardCopy[y][x] = "red";
       setCurrentPlayer(playerYellow);
     } else if (currentPlayer === playerYellow) {
-      boardCopy[rowCoord][columnCoord] = "yellow";
+      boardCopy[y][x] = "yellow";
       setCurrentPlayer(playerRed);
     }
     // if red turn, change piece to red and make it yellow turn
@@ -54,7 +59,7 @@ const Board = () => {
 
     setBoardArr(boardCopy); // updating board state
 
-    currColumnsCopy[columnCoord] = rowCoord - 1; // so row moves up by 1 row
+    currColumnsCopy[x] = y - 1; // so row moves up by 1 row
 
     setCurrColumns(currColumnsCopy); // updating columns
 
@@ -63,22 +68,22 @@ const Board = () => {
 
   const tiles = [];
 
-  const rows = 6;
-  const columns = 7;
+  const yPosition = 6;
+  const xPosition = 7;
 
   function checkWinner() {
     // horizontally
 
-    for (let row = 0; row < rows; row++) {
-      for (let column = 0; column < columns - 3; column++) {
-        if (boardArr[row][column] !== null) {
+    for (let y = 0; y < yPosition; y++) {
+      for (let x = 0; x < xPosition - 3; x++) {
+        if (boardArr[y][x] !== null) {
           if (
-            boardArr[row][column] === boardArr[row][column + 1] &&
-            boardArr[row][column + 1] === boardArr[row][column + 2] &&
-            boardArr[row][column + 2] === boardArr[row][column + 3]
+            boardArr[y][x] === boardArr[y][x + 1] &&
+            boardArr[y][x + 1] === boardArr[y][x + 2] &&
+            boardArr[y][x + 2] === boardArr[y][x + 3]
           ) {
-            decideWinner(row, column);
-            return; // so we don't have to check the rest of the rows, vertically or diagonally when we've found a connect 4
+            decideWinner(y, x);
+            return; // so we don't have to check vertically or diagonally when we've found a connect 4 horizontally
           }
         }
       }
@@ -86,54 +91,104 @@ const Board = () => {
 
     // vertically
 
-    for (let column = 0; column < columns; column++) {
-      for (let row = 0; row < rows - 3; row++) {
-        if (boardArr[row][column] !== null) {
+    for (let x = 0; x < xPosition; x++) {
+      for (let y = 0; y < yPosition - 3; y++) {
+        if (boardArr[y][x] !== null) {
           if (
-            boardArr[row][column] === boardArr[row + 1][column] &&
-            boardArr[row + 1][column] === boardArr[row + 2][column] &&
-            boardArr[row + 2][column] === boardArr[row + 2][column]
+            boardArr[y][x] === boardArr[y + 1][x] &&
+            boardArr[y + 1][x] === boardArr[y + 2][x] &&
+            boardArr[y + 2][x] === boardArr[y + 3][x]
           ) {
-            decideWinner(row, column);
-            return;
+            decideWinner(y, x);
+            return; // don't have to check diagonally or anti-diagonally when we've found a connect 4 vertically
+          }
+        }
+      }
+    }
+
+    // anti diagonally
+
+    for (let y = 0; y < yPosition - 3; y++) {
+      for (let x = 0; x < xPosition - 3; x++) {
+        if (boardArr[y][x] !== null) {
+          if (
+            boardArr[y][x] === boardArr[y + 1][x + 1] &&
+            boardArr[y + 1][x + 1] === boardArr[y + 2][x + 2] &&
+            boardArr[y + 3][x + 3]
+          ) {
+            decideWinner(y, x);
+            return; // don't have to check diagonally when we've found a connect 4 anti-diagonally
+          }
+        }
+      }
+    }
+
+    // diagonally
+
+    for (let y = 3; y < yPosition; y++) {
+      for (let x = 0; x < xPosition - 3; x++) {
+        if (boardArr[y][x] !== null) {
+          if (
+            boardArr[y][x] == boardArr[y - 1][x + 1] &&
+            boardArr[y - 2][x + 2] &&
+            boardArr[y - 3][x + 3]
+          ) {
+            decideWinner(y, x);
           }
         }
       }
     }
   }
 
-  function decideWinner(row, column) {
-    if (boardArr[row][column] === playerRed) {
-      console.log("RED WINS!");
+  function decideWinner(y, x) {
+    if (boardArr[y][x] === playerRed) {
+      setWinner(playerRed);
+      setGameOver(true);
     } else {
-      console.log("YELLOW WINS");
+      setWinner(playerYellow);
+      setGameOver(true);
     }
 
     setGameOver(true);
   }
 
-  function loserStarts() {}
-
-  for (let row = 0; row < rows; row++) {
+  for (let y = 0; y < yPosition; y++) {
     let rowArr = [];
-    for (let column = 0; column < columns; column++) {
+    for (let x = 0; x < xPosition; x++) {
       rowArr.push(
         <Tile
-          color={boardArr[row][column]}
-          key={row + " " + column}
-          id={row + "-" + column}
+          color={boardArr[y][x]}
+          key={y + " " + x}
+          id={y + "-" + x}
           setPiece={setPiece}
         />
       );
     }
     tiles.push(rowArr);
   }
-
+  const confettiStyles = {
+    width: "100%",
+    height: "100%",
+  };
   return (
     <div>
       {" "}
+      {gameOver && <Confetti style={confettiStyles} />}
+      {/* <div>
+        <button>NEW GAME</button>
+      </div> */}
+      <div className="turn-info"></div>
+      <div className="winner-text">
+        {" "}
+        {winner === null ? (
+          ""
+        ) : winner === playerRed ? (
+          <h2 className="winner-red"> Player Red Wins!</h2>
+        ) : (
+          <h2 className="winner-yellow">Player Yellow Wins!</h2>
+        )}
+      </div>
       <div className="board">{tiles}</div>
-      {/* <h2 className="winner">`${winner === playerRed ? "RED" : "YELLOW"} WINS!`</h2> */}
     </div>
   );
 };
