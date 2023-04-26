@@ -19,8 +19,8 @@ const Board = () => {
   //row is y, column is x
   // y outer array, x inner array, it's reverse atm
 
-  const [playerRed, setPlayerRed] = useState("red");
-  const [playerYellow, setPlayerYellow] = useState("yellow");
+  const [playerRed, setPlayerRed] = useState("Red");
+  const [playerYellow, setPlayerYellow] = useState("Yellow");
   const [currentPlayer, setCurrentPlayer] = useState(playerRed);
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -48,10 +48,10 @@ const Board = () => {
     const boardCopy = [...boardArr]; // making copy so board can be updated
 
     if (currentPlayer === playerRed) {
-      boardCopy[y][x] = "red";
+      boardCopy[y][x] = "Red";
       setCurrentPlayer(playerYellow);
     } else if (currentPlayer === playerYellow) {
-      boardCopy[y][x] = "yellow";
+      boardCopy[y][x] = "Yellow";
       setCurrentPlayer(playerRed);
     }
     // if red turn, change piece to red and make it yellow turn
@@ -148,8 +148,26 @@ const Board = () => {
       setWinner(playerYellow);
       setGameOver(true);
     }
+  }
+  function newGame() {
+    setBoardArr([
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null],
+    ]);
+    setCurrColumns([5, 5, 5, 5, 5, 5, 5]);
+    setGameOver(false);
 
-    setGameOver(true);
+    if (winner === playerRed) {
+      setCurrentPlayer(playerYellow);
+    } else if (winner === playerYellow) {
+      setCurrentPlayer(playerRed);
+    }
+
+    setWinner(null);
   }
 
   for (let y = 0; y < yPosition; y++) {
@@ -174,18 +192,22 @@ const Board = () => {
     <div>
       {" "}
       {gameOver && <Confetti style={confettiStyles} />}
-      {/* <div>
-        <button>NEW GAME</button>
-      </div> */}
+      <div>
+        <button className="new-game" onClick={newGame}>
+          NEW GAME
+        </button>
+      </div>
       <div className="turn-info"></div>
       <div className="winner-text">
         {" "}
         {winner === null ? (
-          ""
+          <h2> Player {currentPlayer} Turn</h2>
         ) : winner === playerRed ? (
-          <h2 className="winner-red"> Player Red Wins!</h2>
+          <h2 className="red-text"> Player Red Wins! Loser starts next 😏</h2>
         ) : (
-          <h2 className="winner-yellow">Player Yellow Wins!</h2>
+          <h2 className="yellow-text">
+            Player Yellow Wins! Loser starts next 😏
+          </h2>
         )}
       </div>
       <div className="board">{tiles}</div>

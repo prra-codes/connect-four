@@ -12,15 +12,24 @@
 
 .winner-text {
   height: 30px;
-  /* width: 20px; */
-  /* background-color: green; */
-  /* font-size: 20px; */
+  text-align: center;
 }
 
-.winner-red {
+.red-text {
   color: red;
 }
 
-.winner-yellow {
+.yellow-text {
   color: yellow;
+}
+
+.new-game {
+  height: 30px;
+  width: 100px;
+  background-color: #0362fc;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
