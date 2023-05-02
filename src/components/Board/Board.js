@@ -5,7 +5,7 @@ import { useState } from "react";
 import Confetti from "react-confetti";
 
 const Board = () => {
-  // 6 ys, 7 xs
+  // 7 xs, 6 ys
 
   const [boardArr, setBoardArr] = useState([
     [null, null, null, null, null, null, null],
@@ -17,7 +17,7 @@ const Board = () => {
   ]);
   // boardArr[1][6], this is y first x second
   //row is y, column is x
-  // y outer array, x inner array, it's reverse atm
+  // y outer array, x inner array
 
   const [playerRed, setPlayerRed] = useState("Red");
   const [playerYellow, setPlayerYellow] = useState("Yellow");
@@ -55,7 +55,7 @@ const Board = () => {
       setCurrentPlayer(playerRed);
     }
     // if red turn, change piece to red and make it yellow turn
-    // if yellow turn, change piece to yellow turn
+    // if yellow turn, change piece to yellow and make it red turn
 
     setBoardArr(boardCopy); // updating board state
 
@@ -83,7 +83,8 @@ const Board = () => {
             boardArr[y][x + 2] === boardArr[y][x + 3]
           ) {
             decideWinner(y, x);
-            return; // so we don't have to check vertically or diagonally when we've found a connect 4 horizontally
+            return;
+            // so we don't have to check vertically or diagonally when we've found a connect 4 horizontally
           }
         }
       }
@@ -114,7 +115,7 @@ const Board = () => {
           if (
             boardArr[y][x] === boardArr[y + 1][x + 1] &&
             boardArr[y + 1][x + 1] === boardArr[y + 2][x + 2] &&
-            boardArr[y + 3][x + 3]
+            boardArr[y + 2][x + 2] === boardArr[y + 3][x + 3]
           ) {
             decideWinner(y, x);
             return; // don't have to check diagonally when we've found a connect 4 anti-diagonally
@@ -129,11 +130,12 @@ const Board = () => {
       for (let x = 0; x < xPosition - 3; x++) {
         if (boardArr[y][x] !== null) {
           if (
-            boardArr[y][x] == boardArr[y - 1][x + 1] &&
-            boardArr[y - 2][x + 2] &&
-            boardArr[y - 3][x + 3]
+            boardArr[y][x] === boardArr[y - 1][x + 1] &&
+            boardArr[y - 1][x + 1] === boardArr[y - 2][x + 2] &&
+            boardArr[y - 2][x + 2] === boardArr[y - 3][x + 3]
           ) {
             decideWinner(y, x);
+            return;
           }
         }
       }
@@ -141,6 +143,7 @@ const Board = () => {
   }
 
   function decideWinner(y, x) {
+    console.log("DECIDED THE WINNER");
     if (boardArr[y][x] === playerRed) {
       setWinner(playerRed);
       setGameOver(true);
@@ -197,7 +200,6 @@ const Board = () => {
           NEW GAME
         </button>
       </div>
-      <div className="turn-info"></div>
       <div className="winner-text">
         {" "}
         {winner === null ? (
