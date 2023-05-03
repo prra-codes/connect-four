@@ -6,7 +6,7 @@ import Confetti from "react-confetti";
 
 const Board = () => {
   // 7 xs, 6 ys
-  // new changes branch
+  // new changes branch added
   const [boardArr, setBoardArr] = useState([
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
