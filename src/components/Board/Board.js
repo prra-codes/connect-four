@@ -132,7 +132,6 @@ const Board = () => {
   }
 
   function decideWinner(y, x) {
-    console.log("DECIDED THE WINNER");
     if (boardArr[y][x] === playerRed) {
       setWinner(playerRed);
       setGameOver(true);
