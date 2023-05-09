@@ -5,8 +5,6 @@ import { useState } from "react";
 import Confetti from "react-confetti";
 
 const Board = () => {
-  // 7 xs, 6 ys
-
   const [boardArr, setBoardArr] = useState([
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
@@ -15,9 +13,6 @@ const Board = () => {
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
   ]);
-  // boardArr[1][6], this is y first x second
-  //row is y, column is x
-  // y outer array, x inner array
 
   const [playerRed, setPlayerRed] = useState("Red");
   const [playerYellow, setPlayerYellow] = useState("Yellow");
@@ -27,11 +22,7 @@ const Board = () => {
 
   const [currColumns, setCurrColumns] = useState([5, 5, 5, 5, 5, 5, 5]); // array to mark the height of each column, starts at bottom row
 
-  // columns are horizontal position
-  // rows are vertical position
-
   function setPiece(y, x) {
-    // with coords can change board state
     if (gameOver) {
       return;
     } // if game over, cannot set piece
@@ -54,8 +45,6 @@ const Board = () => {
       boardCopy[y][x] = "Yellow";
       setCurrentPlayer(playerRed);
     }
-    // if red turn, change piece to red and make it yellow turn
-    // if yellow turn, change piece to yellow and make it red turn
 
     setBoardArr(boardCopy); // updating board state
 
@@ -84,7 +73,7 @@ const Board = () => {
           ) {
             decideWinner(y, x);
             return;
-            // so we don't have to check vertically or diagonally when we've found a connect 4 horizontally
+            // don't have to check vertically or diagonally when we've found a connect 4 horizontally
           }
         }
       }
