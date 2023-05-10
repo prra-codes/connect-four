@@ -57,14 +57,14 @@ const Board = () => {
 
   const tiles = [];
 
-  const yPosition = 6;
-  const xPosition = 7;
+  const ySize = 6;
+  const xSize = 7;
 
   function checkWinner() {
     // horizontally
 
-    for (let y = 0; y < yPosition; y++) {
-      for (let x = 0; x < xPosition - 3; x++) {
+    for (let y = 0; y < ySize; y++) {
+      for (let x = 0; x < xSize - 3; x++) {
         if (boardArr[y][x] !== null) {
           if (
             boardArr[y][x] === boardArr[y][x + 1] &&
@@ -81,8 +81,8 @@ const Board = () => {
 
     // vertically
 
-    for (let x = 0; x < xPosition; x++) {
-      for (let y = 0; y < yPosition - 3; y++) {
+    for (let x = 0; x < xSize; x++) {
+      for (let y = 0; y < ySize - 3; y++) {
         if (boardArr[y][x] !== null) {
           if (
             boardArr[y][x] === boardArr[y + 1][x] &&
@@ -98,8 +98,8 @@ const Board = () => {
 
     // anti diagonally
 
-    for (let y = 0; y < yPosition - 3; y++) {
-      for (let x = 0; x < xPosition - 3; x++) {
+    for (let y = 0; y < ySize - 3; y++) {
+      for (let x = 0; x < xSize - 3; x++) {
         if (boardArr[y][x] !== null) {
           if (
             boardArr[y][x] === boardArr[y + 1][x + 1] &&
@@ -115,8 +115,8 @@ const Board = () => {
 
     // diagonally
 
-    for (let y = 3; y < yPosition; y++) {
-      for (let x = 0; x < xPosition - 3; x++) {
+    for (let y = 3; y < ySize; y++) {
+      for (let x = 0; x < xSize - 3; x++) {
         if (boardArr[y][x] !== null) {
           if (
             boardArr[y][x] === boardArr[y - 1][x + 1] &&
@@ -161,9 +161,9 @@ const Board = () => {
     setWinner(null);
   }
 
-  for (let y = 0; y < yPosition; y++) {
+  for (let y = 0; y < ySize; y++) {
     let rowArr = [];
-    for (let x = 0; x < xPosition; x++) {
+    for (let x = 0; x < xSize; x++) {
       rowArr.push(
         <Tile
           color={boardArr[y][x]}
