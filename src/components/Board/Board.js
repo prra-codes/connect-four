@@ -14,9 +14,7 @@ const Board = () => {
     [null, null, null, null, null, null, null],
   ]);
 
-  const [playerRed, setPlayerRed] = useState("Red");
-  const [playerYellow, setPlayerYellow] = useState("Yellow");
-  const [currentPlayer, setCurrentPlayer] = useState(playerRed);
+  const [currentPlayer, setCurrentPlayer] = useState("Red");
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
 
@@ -38,12 +36,12 @@ const Board = () => {
 
     const boardCopy = [...boardArr]; // making copy so board can be updated
 
-    if (currentPlayer === playerRed) {
-      boardCopy[y][x] = "Red";
-      setCurrentPlayer(playerYellow);
-    } else if (currentPlayer === playerYellow) {
-      boardCopy[y][x] = "Yellow";
-      setCurrentPlayer(playerRed);
+    if (currentPlayer === "Red") {
+      boardCopy[y][x] = "red";
+      setCurrentPlayer("Yellow");
+    } else if (currentPlayer === "Yellow") {
+      boardCopy[y][x] = "yellow";
+      setCurrentPlayer("Red");
     }
 
     setBoardArr(boardCopy); // updating board state
@@ -132,11 +130,11 @@ const Board = () => {
   }
 
   function decideWinner(y, x) {
-    if (boardArr[y][x] === playerRed) {
-      setWinner(playerRed);
+    if (boardArr[y][x] === "red") {
+      setWinner("Red");
       setGameOver(true);
     } else {
-      setWinner(playerYellow);
+      setWinner("Yellow");
       setGameOver(true);
     }
   }
@@ -152,10 +150,10 @@ const Board = () => {
     setCurrColumns([5, 5, 5, 5, 5, 5, 5]);
     setGameOver(false);
 
-    if (winner === playerRed) {
-      setCurrentPlayer(playerYellow);
-    } else if (winner === playerYellow) {
-      setCurrentPlayer(playerRed);
+    if (winner === "Red") {
+      setCurrentPlayer("Yellow");
+    } else if (winner === "Yellow") {
+      setCurrentPlayer("Red");
     }
 
     setWinner(null);
@@ -192,7 +190,7 @@ const Board = () => {
         {" "}
         {winner === null ? (
           <h2> Player {currentPlayer} Turn</h2>
-        ) : winner === playerRed ? (
+        ) : winner === "Red" ? (
           <h2 className="red-text"> Player Red Wins! Loser starts next 😏</h2>
         ) : (
           <h2 className="yellow-text">
