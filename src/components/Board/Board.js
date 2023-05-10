@@ -4,6 +4,9 @@ import "./Board.css";
 import { useState } from "react";
 import Confetti from "react-confetti";
 
+const RED = "Red";
+const YELLOW = "Yellow";
+
 const Board = () => {
   const [boardArr, setBoardArr] = useState([
     [null, null, null, null, null, null, null],
@@ -14,7 +17,7 @@ const Board = () => {
     [null, null, null, null, null, null, null],
   ]);
 
-  const [currentPlayer, setCurrentPlayer] = useState("Red");
+  const [currentPlayer, setCurrentPlayer] = useState(RED);
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
 
@@ -36,12 +39,12 @@ const Board = () => {
 
     const boardCopy = [...boardArr]; // making copy so board can be updated
 
-    if (currentPlayer === "Red") {
-      boardCopy[y][x] = "red";
-      setCurrentPlayer("Yellow");
-    } else if (currentPlayer === "Yellow") {
-      boardCopy[y][x] = "yellow";
-      setCurrentPlayer("Red");
+    if (currentPlayer === RED) {
+      boardCopy[y][x] = RED;
+      setCurrentPlayer(YELLOW);
+    } else if (currentPlayer === YELLOW) {
+      boardCopy[y][x] = YELLOW;
+      setCurrentPlayer(RED);
     }
 
     setBoardArr(boardCopy); // updating board state
@@ -130,11 +133,11 @@ const Board = () => {
   }
 
   function decideWinner(y, x) {
-    if (boardArr[y][x] === "red") {
-      setWinner("Red");
+    if (boardArr[y][x] === RED) {
+      setWinner(RED);
       setGameOver(true);
     } else {
-      setWinner("Yellow");
+      setWinner(YELLOW);
       setGameOver(true);
     }
   }
@@ -150,10 +153,10 @@ const Board = () => {
     setCurrColumns([5, 5, 5, 5, 5, 5, 5]);
     setGameOver(false);
 
-    if (winner === "Red") {
-      setCurrentPlayer("Yellow");
-    } else if (winner === "Yellow") {
-      setCurrentPlayer("Red");
+    if (winner === RED) {
+      setCurrentPlayer(YELLOW);
+    } else if (winner === YELLOW) {
+      setCurrentPlayer(RED);
     }
 
     setWinner(null);
@@ -190,7 +193,7 @@ const Board = () => {
         {" "}
         {winner === null ? (
           <h2> Player {currentPlayer} Turn</h2>
-        ) : winner === "Red" ? (
+        ) : winner === RED ? (
           <h2 className="red-text"> Player Red Wins! Loser starts next 😏</h2>
         ) : (
           <h2 className="yellow-text">
