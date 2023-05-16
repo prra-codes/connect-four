@@ -8,6 +8,10 @@
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
+  /* cursor: pointer; */
+
+  /* cursor: url("../../images/actual-red-disc.png"), auto; */
+  cursor: url("../../images/actual-yellow-disc.png"), auto;
 }
 
 .winner-text {
